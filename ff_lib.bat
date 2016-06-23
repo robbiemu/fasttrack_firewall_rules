@@ -3,6 +3,7 @@ setlocal enabledelayedexpansion
 
 set RuleName=FastTrack
 set RulePort=667
+set ICMPRule=All ICMP V4
 REM Profile can be any one of these: public, private, domain, any
 set RuleProfile=domain
 
@@ -27,12 +28,12 @@ EXIT /B
 		exit /b 0
 	)
 
-	netsh advfirewall firewall add rule name="All ICMP V4" dir=in action=allow protocol=icmpv4
+	netsh advfirewall firewall add rule name="%ICMPRule%" dir=in action=allow protocol=icmpv4
 	netsh advfirewall firewall add rule name="%RuleName%" dir=in action=allow protocol=TCP localport=667
 	ECHO Firewall opened for fastrack (ICMP and TCP port 667)
 	GOTO END_CASE
 :CASE_off
-	netsh advfirewall firewall delete rule name="All ICMP V4"
+	netsh advfirewall firewall delete rule name="%ICMPRule%"
 	netsh advfirewall firewall delete rule name="%RuleName%"
 	ECHO Fastrack firewall rules closed (ICMP and TCP port 667)
 	GOTO END_CASE
